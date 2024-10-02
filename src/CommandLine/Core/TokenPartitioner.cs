@@ -4,6 +4,7 @@ using CSharpx;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CommandLine.Infrastructure;
 using ReferenceEqualityComparer = CommandLine.Infrastructure.ReferenceEqualityComparer;
 
 namespace CommandLine.Core
@@ -63,26 +64,26 @@ namespace CommandLine.Core
                     {
                         switch (info.TargetType)
                         {
-                        case TargetType.Switch:
-                            nameToken = null;
-                            switchTokens.Add(token);
-                            state = SequenceState.TokenSearch;
-                            break;
-                        case TargetType.Scalar:
-                            nameToken = token;
-                            scalarTokens.Add(nameToken);
-                            state = SequenceState.ScalarTokenFound;
-                            break;
-                        case TargetType.Sequence:
-                            nameToken = token;
+                            case TargetType.Switch:
+                                nameToken = null;
+                                switchTokens.Add(token);
+                                state = SequenceState.TokenSearch;
+                                break;
+                            case TargetType.Scalar:
+                                nameToken = token;
+                                scalarTokens.Add(nameToken);
+                                state = SequenceState.ScalarTokenFound;
+                                break;
+                            case TargetType.Sequence:
+                                nameToken = token;
                             if (! sequences.ContainsKey(nameToken))
-                            {
-                                sequences[nameToken] = new List<Token>();
-                                count[nameToken] = 0;
-                                max[nameToken] = info.MaxItems;
-                            }
-                            state = SequenceState.SequenceTokenFound;
-                            break;
+                                {
+                                    sequences[nameToken] = new List<Token>();
+                                    count[nameToken] = 0;
+                                    max[nameToken] = info.MaxItems;
+                                }
+                                state = SequenceState.SequenceTokenFound;
+                                break;
                         }
                     }
                     else
@@ -150,9 +151,9 @@ namespace CommandLine.Core
                                 max[nameToken] = Maybe.Nothing<int>();
                             }
                             break;
-                        }
                     }
                 }
+            }
 
             foreach (var kvp in sequences)
             {
@@ -179,6 +180,5 @@ namespace CommandLine.Core
             SequenceTokenFound,
             ScalarTokenFound,
         }
-
     }
 }
