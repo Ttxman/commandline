@@ -1,13 +1,14 @@
 ﻿// Copyright 2005-2015 Giacomo Stelluti Scala & Contributors. All rights reserved. See License.md in the project root for license information.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using CommandLine.Core;
 using CommandLine.Text;
 using CSharpx;
 using RailwaySharp.ErrorHandling;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 
 namespace CommandLine
 {
@@ -18,6 +19,7 @@ namespace CommandLine
     {
         private bool disposed;
         private readonly ParserSettings settings;
+
         private static readonly Lazy<Parser> DefaultParser = new Lazy<Parser>(
             () => new Parser(new ParserSettings { HelpWriter = Console.Error }));
 
@@ -83,7 +85,7 @@ namespace CommandLine
         /// <returns>A <see cref="CommandLine.ParserResult{T}"/> containing an instance of type <typeparamref name="T"/> with parsed values
         /// and a sequence of <see cref="CommandLine.Error"/>.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if one or more arguments are null.</exception>
-        public ParserResult<T> ParseArguments<T>(IEnumerable<string> args)
+        public ParserResult<T> ParseArguments<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(IEnumerable<string> args)
         {
             if (args == null) throw new ArgumentNullException("args");
 
@@ -116,7 +118,7 @@ namespace CommandLine
         /// <returns>A <see cref="CommandLine.ParserResult{T}"/> containing an instance of type <typeparamref name="T"/> with parsed values
         /// and a sequence of <see cref="CommandLine.Error"/>.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if one or more arguments are null.</exception>
-        public ParserResult<T> ParseArguments<T>(Func<T> factory, IEnumerable<string> args)
+        public ParserResult<T> ParseArguments<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(Func<T> factory, IEnumerable<string> args)
         {
             if (factory == null) throw new ArgumentNullException("factory");
             if (!typeof(T).IsMutable()) throw new ArgumentException("factory");
@@ -197,7 +199,7 @@ namespace CommandLine
                     settings.EnableDashDash)(arguments, optionSpecs);
         }
 
-        private static ParserResult<T> MakeParserResult<T>(ParserResult<T> parserResult, ParserSettings settings)
+        private static ParserResult<T> MakeParserResult<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ParserResult<T> parserResult, ParserSettings settings)
         {
             return DisplayHelp(
                 parserResult,
@@ -205,7 +207,7 @@ namespace CommandLine
                 settings.MaximumDisplayWidth);
         }
 
-        private static ParserResult<T> DisplayHelp<T>(ParserResult<T> parserResult, TextWriter helpWriter, int maxDisplayWidth)
+        private static ParserResult<T> DisplayHelp<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(ParserResult<T> parserResult, TextWriter helpWriter, int maxDisplayWidth)
         {
             parserResult.WithNotParsed(
                 errors =>
